@@ -35,5 +35,6 @@ Execute the development in these phases. Read the specific `.md` files for exact
 
 - **Phase 1:** Setup `src/main.cpp`, CMakeLists, and basic ImGui loop.
 - **Phase 2:** Implement `specs/feat/feat_desktop.md`.
-- **Phase 3:** Implement `specs/feat/feat_taskbar.md`.
-- **Phase 4:** Implement `specs/feat/feat_taskmgr.md`.
+- **Phase 3:** Implement `specs/feat/feat_taskbar.md` (split: 3a baseline, 3b polish).
+- **Phase 4:** OS theme pass over desktop + taskbar (`specs/phases/phase-4-os-theme.md`).
+- **Phase 5:** Implement `specs/feat/feat_taskmgr.md`.
