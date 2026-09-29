@@ -14,6 +14,7 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(glfw
   URL https://github.com/glfw/glfw/archive/refs/tags/3.4.tar.gz
+  DOWNLOAD_EXTRACT_TIMESTAMP true
 )
 FetchContent_MakeAvailable(glfw)
 

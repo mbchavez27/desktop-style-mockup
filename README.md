@@ -17,7 +17,7 @@ Fedora / RHEL:
 sudo dnf install -y cmake g++ git \
   libX11-devel libXext-devel libXrandr-devel libXcursor-devel \
   libXi-devel libXinerama-devel mesa-libGL-devel \
-  libxkbcommon-devel wayland-protocols-devel
+  libxkbcommon-devel wayland-devel wayland-protocols-devel
 ```
 
 Ubuntu / Debian:
@@ -26,7 +26,7 @@ Ubuntu / Debian:
 sudo apt install -y cmake g++ git \
   libx11-dev libxext-dev libxrandr-dev libxcursor-dev \
   libxi-dev libxinerama-dev libgl1-mesa-dev \
-  libxkbcommon-dev wayland-protocols
+  libxkbcommon-dev libwayland-dev wayland-protocols
 ```
 
 Check versions:
