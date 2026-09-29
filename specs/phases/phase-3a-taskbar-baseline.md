@@ -1,6 +1,9 @@
 # Phase 3a — Taskbar Baseline (bottom bar + toggles)
 
-Status: pending.
+Status: done.
+
+Verified: clean build, bar pinned bottom on resize, buttons toggle
+dummies, PWR in top-right clock row exits 0, OS 'X' ignored.
 
 Spec: `specs/feat/feat_taskbar.md` (bottom placement, 40–50px height range).
 

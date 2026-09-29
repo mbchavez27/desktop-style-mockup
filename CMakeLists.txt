@@ -41,10 +41,13 @@ target_include_directories(imgui PUBLIC
 
 target_link_libraries(imgui PUBLIC glfw)
 
+
 add_executable(mockup_app
   src/main.cpp
   src/core/AppState.cpp
   src/ui/Desktop.cpp
+  src/ui/Taskbar.cpp
+  src/ui/MockApps.cpp
 )
 
 target_include_directories(mockup_app PRIVATE include)

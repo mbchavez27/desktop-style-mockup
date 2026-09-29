@@ -8,6 +8,8 @@
 
 #include "core/AppState.h"
 #include "ui/Desktop.h"
+#include "ui/Taskbar.h"
+#include "ui/MockApps.h"
 
 // Swallow OS close requests so shutdown only happens via is_running.
 static void OnWindowClose(GLFWwindow *window)
@@ -59,8 +61,10 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Draw the desktop base layer.
+        // Draw the layers back-to-front: desktop, apps, taskbar on top.
         RenderDesktop();
+        RenderMockApps();
+        RenderTaskbar();
 
         // Record draw data, fit the viewport, and present the frame.
         ImGui::Render();

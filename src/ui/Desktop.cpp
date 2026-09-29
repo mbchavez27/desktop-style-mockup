@@ -27,19 +27,19 @@ void RenderDesktop()
                                                         IM_COL32(15, 30, 70, 255), IM_COL32(25, 110, 140, 255),
                                                         IM_COL32(30, 150, 160, 255), IM_COL32(12, 45, 95, 255));
 
-    // Show the local time in the top-right corner.
+    // Clock with the power button on the same line, pinned top-right.
     const std::time_t now =
         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     char clock[16] = {};
     std::strftime(clock, sizeof(clock), "%H:%M:%S", std::localtime(&now));
-    ImGui::SetCursorPos(
-        ImVec2(ImGui::GetWindowWidth() - ImGui::CalcTextSize(clock).x - 16.0f, 12.0f));
-    ImGui::TextUnformatted(clock);
-
-    // Power button in the bottom-right corner; exits the main loop.
     const ImVec2 pwr_size(80.0f, 0.0f);
-    ImGui::SetCursorPos(ImVec2(ImGui::GetWindowWidth() - pwr_size.x - 16.0f,
-                               ImGui::GetWindowHeight() - ImGui::GetFrameHeight() - 16.0f));
+    const float spacing = 8.0f;
+    const float group =
+        ImGui::CalcTextSize(clock).x + spacing + pwr_size.x;
+    ImGui::SetCursorPos(ImVec2(ImGui::GetWindowWidth() - group - 16.0f, 12.0f));
+    ImGui::TextUnformatted(clock);
+    ImGui::SameLine(0.0f, spacing);
+    // Power button; exits the main loop.
     if (ImGui::Button("PWR", pwr_size))
     {
         AppState::is_running = false;
