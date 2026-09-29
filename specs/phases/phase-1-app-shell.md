@@ -1,6 +1,9 @@
 # Phase 1 — App Shell (main loop + global state)
 
-Status: pending.
+Status: done.
+
+Verified: clean `cmake --build build` (no warnings), smoke run shows
+black 1280x720 window, OS 'X' ignored as specified.
 
 Spec: `specs/main_agenda.md` §2 (Global Architecture & State),
 §3 (Execution Constraints), Phase 1.
