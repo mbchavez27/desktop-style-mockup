@@ -1,6 +1,9 @@
 # Phase 2 — Desktop Compositor (base layer)
 
-Status: pending.
+Status: done.
+
+Verified: gradient fills viewport on resize, clock ticks HH:MM:SS
+top-right, PWR exits 0, OS 'X' ignored.
 
 Spec: `specs/feat/feat_desktop.md`.
 
