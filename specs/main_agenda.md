@@ -34,6 +34,6 @@ All UI components must be modular. State is managed globally.
 Execute the development in these phases. Read the specific `.md` files for exact implementation details.
 
 - **Phase 1:** Setup `src/main.cpp`, CMakeLists, and basic ImGui loop.
-- **Phase 2:** Implement `specs/feat_desktop.md`.
-- **Phase 3:** Implement `specs/feat_taskbar.md`.
-- **Phase 4:** Implement `specs/feat_taskmgr.md`.
+- **Phase 2:** Implement `specs/feat/feat_desktop.md`.
+- **Phase 3:** Implement `specs/feat/feat_taskbar.md`.
+- **Phase 4:** Implement `specs/feat/feat_taskmgr.md`.

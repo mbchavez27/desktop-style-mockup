@@ -2,7 +2,7 @@
 
 Status: pending.
 
-Spec: `specs/feat_desktop.md`.
+Spec: `specs/feat/feat_desktop.md`.
 
 Depends on: Phase 1 (app shell + `AppState::is_running`).
 
