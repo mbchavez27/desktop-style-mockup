@@ -1,3 +1,6 @@
+#include <chrono>
+#include <ctime>
+
 #include "imgui.h"
 #include "core/AppState.h"
 #include "ui/IconCache.h"
@@ -88,11 +91,30 @@ void RenderTaskbar()
     const float total = 3.0f * cell + 2.0f * 10.0f;
     ImGui::SetCursorPosX((ImGui::GetWindowWidth() - total) * 0.5f);
 
-    TaskbarIconButton("##app1", "assets/images/app1.png", "App 1", &AppState::show_app_1);
+    TaskbarIconButton("##app1", "assets/images/word.png", "Word", &AppState::show_app_1);
     ImGui::SameLine();
-    TaskbarIconButton("##app2", "assets/images/app2.png", "App 2", &AppState::show_app_2);
+    TaskbarIconButton("##app2", "assets/images/paint.png", "Paint", &AppState::show_app_2);
     ImGui::SameLine();
     TaskbarIconButton("##taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);
+
+    // Tray group (clock + PWR) pinned to the right edge. Each item is placed
+    // at its own measured height so both centers sit on the bar midline.
+    const std::time_t now =
+        std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    char clock[16] = {};
+    std::strftime(clock, sizeof(clock), "%H:%M:%S", std::localtime(&now));
+    const ImVec2 pwr_size(52.0f, 0.0f);
+    const float spacing = 8.0f;
+    const float mid_y = kTaskbarHeight * 0.5f;
+    const float text_h = ImGui::GetTextLineHeight();
+    const float btn_h = ImGui::GetFrameHeight();
+    const float pwr_x = ImGui::GetWindowWidth() - pwr_size.x - 8.0f;
+    const float clock_x = pwr_x - spacing - ImGui::CalcTextSize(clock).x;
+    ImGui::SetCursorPos(ImVec2(clock_x, mid_y - text_h * 0.5f));
+    ImGui::TextUnformatted(clock);
+    ImGui::SetCursorPos(ImVec2(pwr_x, mid_y - btn_h * 0.5f));
+    if (ImGui::Button("PWR", pwr_size))
+        AppState::is_running = false;
 
     ImGui::End();
     ImGui::PopStyleVar(3);

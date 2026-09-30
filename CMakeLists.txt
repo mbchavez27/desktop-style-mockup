@@ -57,6 +57,7 @@ add_executable(mockup_app
   src/main.cpp
   src/core/AppState.cpp
   src/ui/Desktop.cpp
+  src/ui/DesktopIcons.cpp
   src/ui/Taskbar.cpp
   src/ui/MockApps.cpp
   src/ui/IconCache.cpp

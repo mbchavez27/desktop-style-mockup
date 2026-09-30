@@ -8,6 +8,7 @@
 
 #include "core/AppState.h"
 #include "ui/Desktop.h"
+#include "ui/DesktopIcons.h"
 #include "ui/Taskbar.h"
 #include "ui/MockApps.h"
 
@@ -61,8 +62,9 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Draw the layers back-to-front: desktop, apps, taskbar on top.
+        // Draw the layers back-to-front: desktop, icons, apps, taskbar on top.
         RenderDesktop();
+        RenderDesktopIcons();
         RenderMockApps();
         RenderTaskbar();
 
