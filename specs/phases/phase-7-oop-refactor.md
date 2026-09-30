@@ -1,4 +1,4 @@
-# Phase 8 — OOP refactor (documented UI classes)
+# Phase 7 — OOP refactor (documented UI classes)
 
 Status: pending.
 
@@ -21,7 +21,7 @@ Depends on: Phase 5 (Paint — both apps landed) + boot splash commit
   functions, `CMakeLists.txt` sources, render z-order.
 - Deliberate deviation: phase-4's "don't change Render* signatures" gate
   is superseded; main_agenda §3 mandates layer order, not symbol names.
-- Phase 7's TaskManager will be authored as `class TaskManager` directly.
+- Phase 8's TaskManager will be authored as `class TaskManager` directly.
 
 ## Exit criteria
 

@@ -6,8 +6,9 @@ Implement a standard, floating OS-style window that displays mock running proces
 
 ## 2. Target Files
 
-- `include/ui/TaskManager.h`
-- `src/ui/TaskManager.cpp` (expose a function `void RenderTaskManager()`)
+- `include/ui/TaskManager.h` (declare `class TaskManager` with a public
+  `Render()` and an `extern TaskManager g_task_manager;` instance)
+- `src/ui/TaskManager.cpp` (define `g_task_manager`)
 
 ## 3. UI Requirements & ImGui Directives
 

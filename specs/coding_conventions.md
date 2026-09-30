@@ -1,6 +1,6 @@
 # Coding Conventions
 
-Status: active. Applies to all UI code from Phase 8 (OOP refactor)
+Status: active. Applies to all UI code from Phase 7 (OOP refactor)
 onward. Derive new code from these rules; review diffs against them.
 
 ## 1. Architecture
