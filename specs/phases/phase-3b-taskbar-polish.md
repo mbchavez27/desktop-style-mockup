@@ -1,6 +1,6 @@
 # Phase 3b — Taskbar Polish (groupmate)
 
-Status: pending.
+Status: done.
 
 Depends on: Phase 3a pushed to `main` — `git pull` before starting.
 

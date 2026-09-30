@@ -5,6 +5,7 @@
 
 #include "core/AppState.h"
 #include "ui/Desktop.h"
+#include "ui/IconCache.h"
 
 void RenderDesktop()
 {
@@ -19,13 +20,17 @@ void RenderDesktop()
                      ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoBringToFrontOnFocus |
                      ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground);
 
-    // Paint a navy-to-teal diagonal wallpaper gradient.
+    // Wallpaper: stretch background.png over the viewport, gradient if missing.
     const ImVec2 origin = ImGui::GetWindowPos();
     const ImVec2 extent =
         ImVec2(origin.x + ImGui::GetWindowWidth(), origin.y + ImGui::GetWindowHeight());
-    ImGui::GetWindowDrawList()->AddRectFilledMultiColor(origin, extent,
-                                                        IM_COL32(15, 30, 70, 255), IM_COL32(25, 110, 140, 255),
-                                                        IM_COL32(30, 150, 160, 255), IM_COL32(12, 45, 95, 255));
+    const AppIcon &wallpaper = GetIcon("assets/images/background.png");
+    if (wallpaper.ok())
+        ImGui::GetWindowDrawList()->AddImage(wallpaper.tex, origin, extent);
+    else
+        ImGui::GetWindowDrawList()->AddRectFilledMultiColor(origin, extent,
+                                                            IM_COL32(15, 30, 70, 255), IM_COL32(25, 110, 140, 255),
+                                                            IM_COL32(30, 150, 160, 255), IM_COL32(12, 45, 95, 255));
 
     // Clock with the power button on the same line, pinned top-right.
     const std::time_t now =
