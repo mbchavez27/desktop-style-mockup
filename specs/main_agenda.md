@@ -21,6 +21,9 @@ All UI components must be modular. State is managed globally.
 - `static bool show_app_1`: Toggles Mock App 1 visibility.
 - `static bool show_app_2`: Toggles Mock App 2 visibility.
 
+**Coding conventions:** UI code follows `specs/coding_conventions.md`
+(class-based layers, Doxygen docs, naming, ImGui rules, quality gates).
+
 ## 3. Execution Constraints
 
 - **Window Close Hook:** Intercept the GLFW window close callback. If the user clicks the OS-level 'X', ignore it. The application must _only_ exit when `AppState::is_running` is set to `false` via the in-app PWR button.
@@ -40,3 +43,4 @@ Execute the development in these phases. Read the specific `.md` files for exact
 - **Phase 5:** MS Paint canvas app (`specs/phases/phase-5-paint.md`).
 - **Phase 6:** MS Word markdown editor + preview (`specs/phases/phase-6-word.md`).
 - **Phase 7:** Implement `specs/feat/feat_taskmgr.md` (`specs/phases/phase-7-task-manager.md`).
+- **Phase 8:** OOP refactor — documented UI classes (`specs/phases/phase-8-oop-refactor.md`).
