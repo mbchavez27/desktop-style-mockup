@@ -11,9 +11,9 @@ onward. Derive new code from these rules; review diffs against them.
 - Singleton instances: header declares `extern <Name> g_<name>;`, the cpp
   defines it. `src/main.cpp` is the only place that calls `g_*.Render()`;
   layer z-order lives only there.
-- `MockApps` owns `PaintApp` and `WordApp` as private members
-  (`paint_`, `word_`); visibility gating (`show_app_1` / `show_app_2`)
-  happens in `MockApps::Render()`.
+- `MockApps` owns its app components as private members (`paint_`, and
+  `calculator_` once Phase 6 lands); visibility gating
+  (`show_app_1` / `show_app_2`) happens in `MockApps::Render()`.
 - `AppState` statics are global state per `specs/main_agenda.md` §2 and
   are not converted to instances. App windows receive `&flag` in
   `ImGui::Begin()` so the native 'X' toggles them.
