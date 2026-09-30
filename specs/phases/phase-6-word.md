@@ -1,6 +1,13 @@
 # Phase 6 — MS Word (markdown editor + live preview)
 
-Status: pending.
+Status: done.
+
+Verified: clean `cmake --build build` (no warnings), smoke run: live
+preview updates while typing, headings/bullets/quotes/bold/italic/code
+render distinctly, word/char count, icon/taskbar toggles, native 'X'
+closes, other layers unchanged.
+
+Spec: self-contained (see scope below).
 
 Depends on: Phase 5 (Paint — rebase on latest).
 
