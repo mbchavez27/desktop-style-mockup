@@ -38,9 +38,17 @@ g++ --version
 
 ### Windows
 
-- Visual Studio 2022 with Desktop C++ workload, or MinGW-w64 GCC.
+- Pick ONE toolchain:
+  - Visual Studio 2022 with Desktop C++ workload, OR
+  - MinGW-w64 GCC (e.g. via `winget install BrechtSanders.WinLibs.POSIX.UCRT`).
 - CMake >= 3.16 and git (via `winget install Kitware.CMake Git.Git`).
 - OpenGL ships with Windows; GLFW / ImGui are auto-fetched. No extra install.
+- Check what you have (PowerShell):
+  ```powershell
+  cmake --version
+  g++ --version   # MinGW path
+  ninja --version # optional, faster backend bundled with WinLibs
+  ```
 
 ### macOS
 
@@ -86,6 +94,9 @@ cmake --build build --target run
 
 ### Windows (PowerShell, Visual Studio generator)
 
+Only if Visual Studio 2022 + C++ workload is installed
+(a plain `cmake -S . -B build` picks this by default):
+
 ```powershell
 cmake -S . -B build
 cmake --build build --config Release
@@ -98,13 +109,44 @@ One-step build + run:
 cmake --build build --config Release --target run
 ```
 
-### Windows (MinGW / Ninja)
+### Windows (PowerShell, MinGW-w64 / Ninja — no Visual Studio)
+
+If you do NOT have Visual Studio, you must pass `-G` explicitly.
+Otherwise configure defaults to `NMake Makefiles` and fails with:
+
+```text
+Running 'nmake' '-?' failed with: no such file or directory
+```
+
+MinGW Makefiles backend:
 
 ```powershell
 cmake -S . -B build -G "MinGW Makefiles"
 cmake --build build
 .\build\mockup_app.exe
 ```
+
+One-step build + run:
+
+```powershell
+cmake --build build --target run
+```
+
+Ninja backend (faster, bundled with WinLibs):
+
+```powershell
+cmake -S . -B build -G Ninja
+cmake --build build
+.\build\mockup_app.exe
+```
+
+Notes:
+
+- MinGW / Ninja are single-config: do NOT pass `--config Release`.
+- The exe lands at `.\build\mockup_app.exe`
+  (VS instead puts it at `.\build\Release\mockup_app.exe`).
+- Switching generators requires a clean `build/` (see below),
+  otherwise the stale `CMakeCache.txt` keeps pointing at the old generator.
 
 ### macOS
 
@@ -116,7 +158,18 @@ cmake --build build
 
 ## Clean rebuild
 
+Required when switching generators (e.g. NMake -> MinGW -> Ninja)
+or after a failed configure. `--fresh` needs CMake >= 3.24:
+
 ```bash
 cmake -S . -B build --fresh
+cmake --build build
+```
+
+PowerShell equivalent (works on any CMake version):
+
+```powershell
+Remove-Item -Recurse -Force build
+cmake -S . -B build -G "MinGW Makefiles"  # or -G Ninja, or omit for VS
 cmake --build build
 ```
