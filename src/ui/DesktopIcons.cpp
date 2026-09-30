@@ -63,6 +63,7 @@ void DesktopIcons::Render()
                      ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoDocking |
                      ImGuiWindowFlags_NoBackground);
 
+    DesktopIcon("##desk_app1", "assets/images/calculator.png", "Calculator", &AppState::show_app_1);
     DesktopIcon("##desk_app2", "assets/images/paint.png", "Paint", &AppState::show_app_2);
     DesktopIcon("##desk_taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);
 

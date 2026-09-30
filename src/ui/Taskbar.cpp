@@ -90,9 +90,11 @@ void Taskbar::Render()
 
     // Center the row: content origin is WindowPadding.x, so (W - total) / 2 is exact.
     const float cell = kIconSize + 2.0f * 2.0f; // icon + FramePadding.x * 2
-    const float total = 2.0f * cell + 1.0f * 10.0f;
+    const float total = 3.0f * cell + 2.0f * 10.0f;
     ImGui::SetCursorPosX((ImGui::GetWindowWidth() - total) * 0.5f);
 
+    TaskbarIconButton("##app1", "assets/images/calculator.png", "Calculator", &AppState::show_app_1);
+    ImGui::SameLine();
     TaskbarIconButton("##app2", "assets/images/paint.png", "Paint", &AppState::show_app_2);
     ImGui::SameLine();
     TaskbarIconButton("##taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);

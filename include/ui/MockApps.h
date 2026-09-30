@@ -1,12 +1,13 @@
 #pragma once
 
+#include "ui/CalculatorApp.h"
 #include "ui/PaintApp.h"
 
 /**
  * @brief Mid layer hosting the mock application windows.
  *
- * Owns the Paint component and gates it on its AppState visibility flag
- * before rendering. show_app_1 is reserved for the calculator (Phase 6).
+ * Owns the Paint and Calculator components and gates them on their
+ * AppState visibility flags before rendering.
  */
 class MockApps
 {
@@ -14,13 +15,15 @@ public:
     /**
      * @brief Renders every open mock app for this frame.
      *
-     * Paint renders when AppState::show_app_2. Each window still receives
-     * its flag pointer so the native 'X' closes it.
+     * Calculator renders when AppState::show_app_1, Paint when
+     * show_app_2. Each window still receives its flag pointer so the
+     * native 'X' closes it.
      */
     void Render();
 
 private:
-    PaintApp paint_; ///< Canvas drawing app (show_app_2).
+    CalculatorApp calculator_; ///< Four-function calculator (show_app_1).
+    PaintApp paint_;           ///< Canvas drawing app (show_app_2).
 };
 
 /// Global MockApps instance driven by the main render loop.

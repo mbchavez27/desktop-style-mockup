@@ -70,7 +70,7 @@ include/
 src/main.cpp            # entry point: GLFW + ImGui loop
 src/core/AppState.cpp
 src/ui/*.cpp            # BootScreen, Desktop, DesktopIcons, Taskbar,
-                        #   MockApps (owns PaintApp), TaskManager (WIP)
+                        #   MockApps (owns PaintApp + CalculatorApp), TaskManager (WIP)
 specs/                  # phase + feature specs, coding conventions
 build/                  # out-of-source build output + _deps/ (gitignored)
 ```
@@ -99,7 +99,7 @@ z-index (main_agenda §3):
 g_boot_screen.Render()   // splash, topmost (skips the rest while active)
   g_desktop.Render()     // wallpaper + clock + PWR button (base layer)
   g_desktop_icons.Render()  // clickable icon column
-  g_mock_apps.Render()   // app windows (Paint)
+  g_mock_apps.Render()   // app windows (Calculator, Paint)
   g_taskbar.Render()     // XP-style bar, tray clock, app buttons (top layer)
 ```
 
@@ -110,14 +110,13 @@ g_boot_screen.Render()   // splash, topmost (skips the rest while active)
 | `BootScreen` | Fullscreen splash with fade/click-to-skip (only `bool Render()`) |
 | `Desktop` | Wallpaper stretched over the viewport (gradient fallback) |
 | `DesktopIcons` | Top-left icon column; toggles app visibility flags |
-| `MockApps` | Hosts `PaintApp`, gated on its `AppState` flag |
+| `MockApps` | Hosts `CalculatorApp` + `PaintApp`, gated on their `AppState` flags |
 | `Taskbar` | XP Luna bar: app buttons, tray clock, `PWR` (the only way to exit) |
 
 ### State
 
-Global `AppState` statics (`is_running`, `show_app_1` (reserved for the
-Calculator — see `specs/phases/phase-6-calculator.md`), `show_app_2`
-(Paint), `show_task_mgr`). Desktop icons and taskbar buttons
+Global `AppState` statics (`is_running`, `show_app_1` (Calculator),
+`show_app_2` (Paint), `show_task_mgr`). Desktop icons and taskbar buttons
 flip the same flags, so both launchers stay in sync. App windows receive
 `&flag` in `ImGui::Begin()`, so the native 'X' closes just that window.
 Clicking the OS-level window 'X' is intercepted and ignored — only the
@@ -125,11 +124,11 @@ in-app `PWR` button sets `is_running = false` and exits.
 
 ### The mock apps
 
+- **Calculator** — basic four-function: display + keypad (`+ - * /`,
+  `=`, `C`, `+/-`, decimal), left-to-right evaluation, divide-by-zero
+  shows `Error`.
 - **Paint** — canvas drawing: brush/eraser toggle, color swatches +
   `ColorEdit3`, separate brush/eraser stroke sizes, undo, clear.
-
-The Calculator (`show_app_1`) is next up — see
-`specs/phases/phase-6-calculator.md`.
 
 ### Architecture
 
