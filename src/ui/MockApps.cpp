@@ -1,6 +1,7 @@
 #include "imgui.h"
 #include "core/AppState.h"
 #include "ui/MockApps.h"
+#include "ui/PaintApp.h"
 
 void RenderMockApps()
 {
@@ -11,9 +12,5 @@ void RenderMockApps()
         ImGui::End();
     }
     if (AppState::show_app_2)
-    {
-        ImGui::Begin("Paint", &AppState::show_app_2);
-        ImGui::Text("Paint Placeholder");
-        ImGui::End();
-    }
+        RenderPaintApp();
 }
