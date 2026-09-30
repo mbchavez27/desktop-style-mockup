@@ -41,6 +41,7 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
     glfwSetWindowCloseCallback(window, OnWindowClose);
 
     // Create the ImGui context with keyboard navigation and docking.
