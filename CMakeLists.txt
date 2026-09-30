@@ -61,6 +61,7 @@ add_executable(mockup_app
   src/ui/Taskbar.cpp
   src/ui/MockApps.cpp
   src/ui/PaintApp.cpp
+  src/ui/WordApp.cpp
   src/ui/IconCache.cpp
 )
 
