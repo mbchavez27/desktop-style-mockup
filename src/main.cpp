@@ -7,6 +7,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "core/AppState.h"
+#include "ui/BootScreen.h"
 #include "ui/Desktop.h"
 #include "ui/DesktopIcons.h"
 #include "ui/Taskbar.h"
@@ -62,11 +63,16 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // Draw the layers back-to-front: desktop, icons, apps, taskbar on top.
-        RenderDesktop();
-        RenderDesktopIcons();
-        RenderMockApps();
-        RenderTaskbar();
+        // Boot splash covers everything first: fade in, hold ~3s, fade out.
+        // While active, skip the desktop UI so it can't show through.
+        if (!RenderBootScreen())
+        {
+            // Draw the layers back-to-front: desktop, icons, apps, taskbar on top.
+            RenderDesktop();
+            RenderDesktopIcons();
+            RenderMockApps();
+            RenderTaskbar();
+        }
 
         // Record draw data, fit the viewport, and present the frame.
         ImGui::Render();
