@@ -88,7 +88,7 @@ add_custom_command(TARGET mockup_app POST_BUILD
 # make the app die on launch (0xC0000139) from a plain shell or Explorer.
 # The Windows loader checks the exe's own directory first, so bundled copies
 # always win regardless of PATH order.
-if(NOT MSVC)
+if(WIN32)
   # These live in the same dir as the compiler driver (e.g. C:/msys64/ucrt64/bin).
   get_filename_component(_cxx_dir ${CMAKE_CXX_COMPILER} DIRECTORY)
   set(_rt_dll_names libstdc++-6.dll libgcc_s_seh-1.dll libwinpthread-1.dll)
@@ -100,12 +100,14 @@ if(NOT MSVC)
       message(WARNING "Runtime DLL not found next to compiler: ${_cxx_dir}/${_dll}")
     endif()
   endforeach()
-  message(STATUS "Bundling runtime DLLs: ${UCRT_RUNTIME_DLLS}")
-  add_custom_command(TARGET mockup_app POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            ${UCRT_RUNTIME_DLLS} $<TARGET_FILE_DIR:mockup_app>
-    COMMENT "Bundling UCRT64 runtime DLLs next to mockup_app"
-  )
+  if(UCRT_RUNTIME_DLLS)
+    message(STATUS "Bundling runtime DLLs: ${UCRT_RUNTIME_DLLS}")
+    add_custom_command(TARGET mockup_app POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy_if_different
+              ${UCRT_RUNTIME_DLLS} $<TARGET_FILE_DIR:mockup_app>
+      COMMENT "Bundling UCRT64 runtime DLLs next to mockup_app"
+    )
+  endif()
 endif()
 
 # Build + run in one step: cmake --build build --target run
