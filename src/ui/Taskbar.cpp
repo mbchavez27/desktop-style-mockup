@@ -11,7 +11,11 @@ namespace
 
 constexpr float kIconSize = 28.0f; // px; + FramePadding(2) fills the 44px bar exactly
 
-void TaskbarIconButton(const char *id, const char *icon_path, const char *tooltip, bool *toggle)
+} // namespace
+
+Taskbar g_taskbar;
+
+void Taskbar::TaskbarIconButton(const char *id, const char *icon_path, const char *tooltip, bool *toggle)
 {
     const AppIcon &icon = GetIcon(icon_path);
     const bool active = *toggle;
@@ -46,9 +50,7 @@ void TaskbarIconButton(const char *id, const char *icon_path, const char *toolti
     }
 }
 
-} // namespace
-
-void RenderTaskbar()
+void Taskbar::Render()
 {
     ImGuiViewport *vp = ImGui::GetMainViewport();
     // Anchor: bottom edge, full width.

@@ -24,54 +24,42 @@ constexpr ImU32 kSwatches[] = {
     IM_COL32(255, 255, 255, 255),
 };
 
-struct Stroke
-{
-    ImU32 color;
-    float thickness;
-    std::vector<ImVec2> pts; // canvas-local so strokes survive window moves
-};
+} // namespace
 
-std::vector<Stroke> g_strokes;
-float g_color[3] = {0.0f, 0.0f, 0.0f};
-float g_brush_size = 4.0f;
-float g_eraser_size = 16.0f;
-bool g_eraser = false;
-bool g_drawing = false;
-
-ImU32 PackColor(const float c[3])
+ImU32 PaintApp::PackColor(const float c[3])
 {
     return IM_COL32(static_cast<int>(c[0] * 255.0f + 0.5f),
                     static_cast<int>(c[1] * 255.0f + 0.5f),
                     static_cast<int>(c[2] * 255.0f + 0.5f), 255);
 }
 
-ImVec4 ToVec4(ImU32 c)
+ImVec4 PaintApp::ToVec4(ImU32 c)
 {
     return ImVec4(static_cast<float>(c & 0xFF) / 255.0f,
                   static_cast<float>((c >> 8) & 0xFF) / 255.0f,
                   static_cast<float>((c >> 16) & 0xFF) / 255.0f, 1.0f);
 }
 
-void RenderToolbar()
+void PaintApp::RenderToolbar()
 {
     // Toggle buttons: highlight the active tool with the accent color.
-    if (!g_eraser)
+    if (!eraser)
         ImGui::PushStyleColor(ImGuiCol_Button, kAccent);
     const bool brush_clicked = ImGui::Button("Brush");
-    if (!g_eraser)
+    if (!eraser)
         ImGui::PopStyleColor();
 
     ImGui::SameLine();
-    if (g_eraser)
+    if (eraser)
         ImGui::PushStyleColor(ImGuiCol_Button, kAccent);
     const bool eraser_clicked = ImGui::Button("Eraser");
-    if (g_eraser)
+    if (eraser)
         ImGui::PopStyleColor();
 
     if (brush_clicked)
-        g_eraser = false;
+        eraser = false;
     if (eraser_clicked)
-        g_eraser = true;
+        eraser = true;
 
     ImGui::SameLine();
     for (size_t i = 0; i < sizeof(kSwatches) / sizeof(kSwatches[0]); ++i)
@@ -80,32 +68,32 @@ void RenderToolbar()
         if (ImGui::ColorButton("##swatch", ToVec4(kSwatches[i]), ImGuiColorEditFlags_NoTooltip))
         {
             const ImVec4 v = ToVec4(kSwatches[i]);
-            g_color[0] = v.x;
-            g_color[1] = v.y;
-            g_color[2] = v.z;
-            g_eraser = false; // picking a color switches back to brush
+            color[0] = v.x;
+            color[1] = v.y;
+            color[2] = v.z;
+            eraser = false; // picking a color switches back to brush
         }
         ImGui::PopID();
         ImGui::SameLine();
     }
-    ImGui::ColorEdit3("Color", g_color);
+    ImGui::ColorEdit3("Color", color);
 
     // Second toolbar row: size slider + history actions.
-    float &size = g_eraser ? g_eraser_size : g_brush_size;
+    float &size = eraser ? eraser_size : brush_size;
     ImGui::SetNextItemWidth(160.0f);
     ImGui::SliderFloat("Size##size", &size, kMinThickness, kMaxThickness, "%.0f px");
 
     ImGui::SameLine();
-    if (ImGui::Button("Undo") && !g_strokes.empty())
-        g_strokes.pop_back();
+    if (ImGui::Button("Undo") && !strokes.empty())
+        strokes.pop_back();
     ImGui::SameLine();
     if (ImGui::Button("Clear"))
-        g_strokes.clear();
+        strokes.clear();
 
     ImGui::Separator();
 }
 
-void RenderCanvas()
+void PaintApp::RenderCanvas()
 {
     const ImVec2 p0 = ImGui::GetCursorScreenPos();
     const ImVec2 sz = ImGui::GetContentRegionAvail();
@@ -121,7 +109,7 @@ void RenderCanvas()
 
     // Replay all strokes on top of the canvas background.
     static std::vector<ImVec2> scratch;
-    for (const Stroke &s : g_strokes)
+    for (const Stroke &s : strokes)
     {
         scratch.resize(s.pts.size());
         for (size_t i = 0; i < s.pts.size(); ++i)
@@ -141,18 +129,18 @@ void RenderCanvas()
 
     if (ImGui::IsItemActive() && ImGui::IsMouseDown(ImGuiMouseButton_Left))
     {
-        if (!g_drawing)
+        if (!drawing)
         {
             Stroke s;
-            s.color = g_eraser ? kCanvasBg : PackColor(g_color);
-            s.thickness = g_eraser ? g_eraser_size : g_brush_size;
+            s.color = eraser ? kCanvasBg : PackColor(color);
+            s.thickness = eraser ? eraser_size : brush_size;
             s.pts.push_back(local);
-            g_strokes.push_back(std::move(s));
-            g_drawing = true;
+            strokes.push_back(std::move(s));
+            drawing = true;
         }
-        else if (!g_strokes.empty())
+        else if (!strokes.empty())
         {
-            std::vector<ImVec2> &pts = g_strokes.back().pts;
+            std::vector<ImVec2> &pts = strokes.back().pts;
             const ImVec2 &last = pts.back();
             const float dx = local.x - last.x;
             const float dy = local.y - last.y;
@@ -162,17 +150,12 @@ void RenderCanvas()
     }
     else
     {
-        g_drawing = false;
+        drawing = false;
     }
 }
 
-} // namespace
-
-void RenderPaintApp()
+void PaintApp::Render()
 {
-    if (!AppState::show_app_2)
-        return;
-
     ImGui::SetNextWindowSize(ImVec2(600, 440), ImGuiCond_FirstUseEver);
     ImGui::Begin("Paint", &AppState::show_app_2);
     RenderToolbar();

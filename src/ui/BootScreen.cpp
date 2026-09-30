@@ -8,11 +8,15 @@
 namespace
 {
 
-constexpr float kFadeIn = 1.0f; // fade 0 -> 1
-constexpr float kHold = 3.0f;   // full-opacity show time
+constexpr float kFadeIn = 1.0f;  // fade 0 -> 1
+constexpr float kHold = 3.0f;    // full-opacity show time
 constexpr float kFadeOut = 1.0f; // fade 1 -> 0
 
-float BootAlpha(float elapsed)
+} // namespace
+
+BootScreen g_boot_screen;
+
+float BootScreen::BootAlpha(float elapsed)
 {
     const float total = kFadeIn + kHold + kFadeOut;
     if (elapsed < 0.0f || elapsed >= total)
@@ -24,16 +28,14 @@ float BootAlpha(float elapsed)
     return 1.0f - (elapsed - kFadeIn - kHold) / kFadeOut;
 }
 
-} // namespace
-
-bool RenderBootScreen()
+bool BootScreen::Render()
 {
     // Clock starts on the first frame the splash is drawn.
-    static const auto start = std::chrono::steady_clock::now();
-    // Click-to-skip state: once set, we fade out from whatever alpha we had.
-    static bool skipping = false;
-    static float skip_from_alpha = 1.0f;
-    static float skip_began_at = 0.0f;
+    if (!started)
+    {
+        start = std::chrono::steady_clock::now();
+        started = true;
+    }
 
     const float elapsed =
         std::chrono::duration<float>(std::chrono::steady_clock::now() - start).count();

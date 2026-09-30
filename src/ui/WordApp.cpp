@@ -5,39 +5,8 @@
 #include <cctype>
 #include <cfloat>
 #include <cstring>
-#include <string>
-#include <vector>
 
-namespace
-{
-
-constexpr size_t kBufSize = 16 * 1024;
-char g_buf[kBufSize] =
-    "# Heading 1\n"
-    "Type **markdown** on the left; the preview updates live.\n"
-    "It supports *italic* and `code` too.\n"
-    "\n"
-    "## Heading 2\n"
-    "- bullet one\n"
-    "- bullet two\n"
-    "\n"
-    "> quoted line\n";
-
-enum class Emphasis
-{
-    Plain,
-    Bold,
-    Italic,
-    Code,
-};
-
-struct Run
-{
-    std::string text;
-    Emphasis em;
-};
-
-ImVec4 EmColor(Emphasis em)
+ImVec4 WordApp::EmColor(Emphasis em)
 {
     switch (em)
     {
@@ -52,7 +21,7 @@ ImVec4 EmColor(Emphasis em)
     }
 }
 
-std::vector<Run> TokenizeInline(const char *s, size_t len)
+auto WordApp::TokenizeInline(const char *s, size_t len) -> std::vector<Run>
 {
     std::vector<Run> runs;
     std::string plain;
@@ -121,7 +90,7 @@ std::vector<Run> TokenizeInline(const char *s, size_t len)
     return runs;
 }
 
-void RenderInline(const std::vector<Run> &runs)
+void WordApp::RenderInline(const std::vector<Run> &runs)
 {
     bool first = true;
     for (const Run &r : runs)
@@ -135,20 +104,20 @@ void RenderInline(const std::vector<Run> &runs)
     }
 }
 
-void RenderHeading(const char *s, size_t len, float scale)
+void WordApp::RenderHeading(const char *s, size_t len, float scale)
 {
     ImGui::SetWindowFontScale(scale); // applies to the current child window
     RenderInline(TokenizeInline(s, len));
     ImGui::SetWindowFontScale(1.0f);
 }
 
-bool StartsWith(const char *s, size_t len, const char *prefix)
+bool WordApp::StartsWith(const char *s, size_t len, const char *prefix)
 {
     const size_t n = std::strlen(prefix);
     return len >= n && std::strncmp(s, prefix, n) == 0;
 }
 
-void RenderLine(const char *s, size_t len)
+void WordApp::RenderLine(const char *s, size_t len)
 {
     if (len == 0) // blank line = paragraph break
     {
@@ -180,7 +149,7 @@ void RenderLine(const char *s, size_t len)
     RenderInline(TokenizeInline(s, len));
 }
 
-void RenderPreview(const char *buf)
+void WordApp::RenderPreview(const char *buf)
 {
     const char *p = buf;
     while (*p != '\0')
@@ -194,7 +163,7 @@ void RenderPreview(const char *buf)
     }
 }
 
-int CountWords(const char *s)
+int WordApp::CountWords(const char *s)
 {
     int count = 0;
     bool in_word = false;
@@ -211,13 +180,8 @@ int CountWords(const char *s)
     return count;
 }
 
-} // namespace
-
-void RenderWordApp()
+void WordApp::Render()
 {
-    if (!AppState::show_app_1)
-        return;
-
     ImGui::SetNextWindowSize(ImVec2(760, 480), ImGuiCond_FirstUseEver);
     ImGui::Begin("Word", &AppState::show_app_1, ImGuiWindowFlags_MenuBar);
 
@@ -236,7 +200,7 @@ void RenderWordApp()
     const ImVec2 pane_sz(pane_w, avail.y - 24.0f); // reserve status-bar row
 
     ImGui::BeginChild("##source", pane_sz, ImGuiChildFlags_Borders);
-    ImGui::InputTextMultiline("##markdown", g_buf, sizeof(g_buf),
+    ImGui::InputTextMultiline("##markdown", buffer, sizeof(buffer),
                               ImVec2(-FLT_MIN, -FLT_MIN),
                               ImGuiInputTextFlags_AllowTabInput);
     ImGui::EndChild();
@@ -244,12 +208,12 @@ void RenderWordApp()
     ImGui::SameLine();
 
     ImGui::BeginChild("##preview", ImVec2(0.0f, pane_sz.y), ImGuiChildFlags_Borders);
-    RenderPreview(g_buf);
+    RenderPreview(buffer);
     ImGui::EndChild();
 
     ImGui::Separator();
-    ImGui::Text("%d words   %d characters", CountWords(g_buf),
-                static_cast<int>(std::strlen(g_buf)));
+    ImGui::Text("%d words   %d characters", CountWords(buffer),
+                static_cast<int>(std::strlen(buffer)));
 
     ImGui::End();
 }

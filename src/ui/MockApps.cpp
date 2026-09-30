@@ -1,13 +1,13 @@
 #include "imgui.h"
 #include "core/AppState.h"
 #include "ui/MockApps.h"
-#include "ui/PaintApp.h"
-#include "ui/WordApp.h"
 
-void RenderMockApps()
+MockApps g_mock_apps;
+
+void MockApps::Render()
 {
     if (AppState::show_app_1)
-        RenderWordApp();
+        word_.Render();
     if (AppState::show_app_2)
-        RenderPaintApp();
+        paint_.Render();
 }

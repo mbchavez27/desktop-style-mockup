@@ -10,7 +10,11 @@ constexpr float kCellW = 88.0f; // icon + label cell
 constexpr float kCellH = 70.0f;
 constexpr float kIconPx = 40.0f;
 
-void DesktopIcon(const char *id, const char *icon_path, const char *title, bool *toggle)
+} // namespace
+
+DesktopIcons g_desktop_icons;
+
+void DesktopIcons::DesktopIcon(const char *id, const char *icon_path, const char *title, bool *toggle)
 {
     const AppIcon &icon = GetIcon(icon_path);
     const bool active = *toggle;
@@ -46,9 +50,7 @@ void DesktopIcon(const char *id, const char *icon_path, const char *title, bool 
     dl->AddText(tp, IM_COL32(255, 255, 255, 255), title);
 }
 
-} // namespace
-
-void RenderDesktopIcons()
+void DesktopIcons::Render()
 {
     ImGuiViewport *vp = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(ImVec2(vp->WorkPos.x + 12.0f, vp->WorkPos.y + 12.0f));

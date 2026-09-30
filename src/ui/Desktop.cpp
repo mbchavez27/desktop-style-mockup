@@ -4,7 +4,9 @@
 #include "ui/Desktop.h"
 #include "ui/IconCache.h"
 
-void RenderDesktop()
+Desktop g_desktop;
+
+void Desktop::Render()
 {
     // Cover the full viewport behind all other windows.
     ImGuiViewport *viewport = ImGui::GetMainViewport();

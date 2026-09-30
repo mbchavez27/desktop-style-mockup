@@ -65,13 +65,13 @@ int main()
 
         // Boot splash covers everything first: fade in, hold ~3s, fade out.
         // While active, skip the desktop UI so it can't show through.
-        if (!RenderBootScreen())
+        if (!g_boot_screen.Render())
         {
             // Draw the layers back-to-front: desktop, icons, apps, taskbar on top.
-            RenderDesktop();
-            RenderDesktopIcons();
-            RenderMockApps();
-            RenderTaskbar();
+            g_desktop.Render();
+            g_desktop_icons.Render();
+            g_mock_apps.Render();
+            g_taskbar.Render();
         }
 
         // Record draw data, fit the viewport, and present the frame.
