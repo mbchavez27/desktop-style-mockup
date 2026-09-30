@@ -37,4 +37,6 @@ Execute the development in these phases. Read the specific `.md` files for exact
 - **Phase 2:** Implement `specs/feat/feat_desktop.md`.
 - **Phase 3:** Implement `specs/feat/feat_taskbar.md` (split: 3a baseline, 3b polish).
 - **Phase 4:** OS theme pass over desktop + taskbar (`specs/phases/phase-4-os-theme.md`).
-- **Phase 5:** Implement `specs/feat/feat_taskmgr.md`.
+- **Phase 5:** MS Paint canvas app (`specs/phases/phase-5-paint.md`).
+- **Phase 6:** MS Word markdown editor + preview (`specs/phases/phase-6-word.md`).
+- **Phase 7:** Implement `specs/feat/feat_taskmgr.md` (`specs/phases/phase-7-task-manager.md`).

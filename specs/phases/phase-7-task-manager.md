@@ -1,10 +1,10 @@
-# Phase 5 — Task Manager (floating window)
+# Phase 7 — Task Manager (floating window)
 
 Status: pending.
 
 Spec: `specs/feat/feat_taskmgr.md`.
 
-Depends on: Phase 4 (theme pass — rebase on latest).
+Depends on: Phase 6 (Word — rebase on latest).
 
 ## Scope
 
