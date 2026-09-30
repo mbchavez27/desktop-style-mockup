@@ -1,6 +1,12 @@
 # Phase 5 — MS Paint (canvas drawing app)
 
-Status: pending.
+Status: done.
+
+Verified: clean `cmake --build build` (no warnings), smoke run: colored
+variable-width strokes, separate brush/eraser sizes, eraser, undo, clear,
+icon/taskbar toggles, native 'X' closes, other layers unchanged.
+
+Spec: self-contained (see scope below).
 
 Depends on: Phase 4 (theme pass — rebase on latest).
 
@@ -20,7 +26,8 @@ Depends on: Phase 4 (theme pass — rebase on latest).
 - Toolbar row above the canvas:
   - Brush / Eraser toggle (eraser paints the canvas background color).
   - Color: preset swatches (`IM_COL32`) + `ImGui::ColorEdit3`.
-  - Stroke width: `ImGui::SliderFloat` (1–24 px).
+  - Stroke width: `ImGui::SliderFloat` (1–24 px), bound to the active tool —
+    separate persistent sizes for brush (default 4 px) and eraser (16 px).
   - Undo (pop last stroke) and Clear (empty stroke list) buttons.
 - `CMakeLists.txt`: add `src/ui/PaintApp.cpp` to `mockup_app`.
 
