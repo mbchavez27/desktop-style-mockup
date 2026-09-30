@@ -1,6 +1,6 @@
 # Phase 7 — OOP refactor (documented UI classes)
 
-Status: pending.
+Status: done (`main` @ `ad6139b`).
 
 Depends on: Phase 5 (Paint — both apps landed) + boot splash commit
 (`7065ecf`).

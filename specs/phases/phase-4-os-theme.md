@@ -1,6 +1,6 @@
 # Phase 4 — OS Theme Pass (desktop + taskbar)
 
-Status: pending.
+Status: done (`main` @ `5cbcc35`).
 
 Depends on: Phase 3a pushed to `main` (+ 3b if landed — rebase on latest).
 

@@ -1,6 +1,6 @@
 # Phase 6 — MS Calculator (basic four-function)
 
-Status: pending.
+Status: done (`main` @ `9afc692`).
 
 Depends on: Phase 5 (Paint — rebase on latest).
 
