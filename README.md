@@ -63,15 +63,80 @@ GLFW / ImGui are auto-fetched. No extra install.
 ## Project layout
 
 ```text
-CMakeLists.txt      # FetchContent: GLFW 3.4 + Dear ImGui (docking)
-include/            # public headers (AppState, ui)
-src/main.cpp        # entry point (GLFW + ImGui loop)
-src/core/           # AppState definitions
-src/ui/             # Desktop / Taskbar / TaskManager
-build/              # out-of-source build output + _deps/ (gitignored)
+CMakeLists.txt          # FetchContent: GLFW 3.4 + Dear ImGui (docking)
+include/
+  core/AppState.h       # global visibility flags (is_running, show_*)
+  ui/*.h                # one class per UI layer (Doxygen-documented)
+src/main.cpp            # entry point: GLFW + ImGui loop
+src/core/AppState.cpp
+src/ui/*.cpp            # BootScreen, Desktop, DesktopIcons, Taskbar,
+                        #   MockApps (owns PaintApp + WordApp), TaskManager (WIP)
+specs/                  # phase + feature specs, coding conventions
+build/                  # out-of-source build output + _deps/ (gitignored)
 ```
 
 Target: `mockup_app` (C++17, `/W4` on MSVC, `-Wall -Wextra -Wpedantic` otherwise).
+
+## How it works
+
+This is an immediate-mode compositor: it does not implement real windows,
+processes, or an OS kernel. Every frame it redraws a fake desktop inside a
+single 1280x720 GLFW window using Dear ImGui.
+
+### Boot flow
+
+`BootScreen::Render()` draws a fullscreen splash (`assets/images/boot.png`)
+that fades in, holds ~3s, then fades out; any mouse click skips the wait.
+While it returns `true`, the desktop layers are not drawn, so nothing shows
+through or steals input.
+
+### Render loop (z-order)
+
+`src/main.cpp` draws layers back-to-front every frame — the order is the
+z-index (main_agenda §3):
+
+```text
+g_boot_screen.Render()   // splash, topmost (skips the rest while active)
+  g_desktop.Render()     // wallpaper + clock + PWR button (base layer)
+  g_desktop_icons.Render()  // clickable icon column
+  g_mock_apps.Render()   // app windows (Paint, Word)
+  g_taskbar.Render()     // XP-style bar, tray clock, app buttons (top layer)
+```
+
+### Layers
+
+| Class | Draws |
+|---|---|
+| `BootScreen` | Fullscreen splash with fade/click-to-skip (only `bool Render()`) |
+| `Desktop` | Wallpaper stretched over the viewport (gradient fallback) |
+| `DesktopIcons` | Top-left icon column; toggles app visibility flags |
+| `MockApps` | Hosts `PaintApp` + `WordApp`, gated on their `AppState` flags |
+| `Taskbar` | XP Luna bar: app buttons, tray clock, `PWR` (the only way to exit) |
+
+### State
+
+Global `AppState` statics (`is_running`, `show_app_1` (Word),
+`show_app_2` (Paint), `show_task_mgr`). Desktop icons and taskbar buttons
+flip the same flags, so both launchers stay in sync. App windows receive
+`&flag` in `ImGui::Begin()`, so the native 'X' closes just that window.
+Clicking the OS-level window 'X' is intercepted and ignored — only the
+in-app `PWR` button sets `is_running = false` and exits.
+
+### The mock apps
+
+- **Paint** — canvas drawing: brush/eraser toggle, color swatches +
+  `ColorEdit3`, separate brush/eraser stroke sizes, undo, clear.
+- **Word** — split view: raw markdown on the left (`#`, `-`, `>`,
+  `**bold**`, `*italic*`, `` `code` ``), live rendered preview on the
+  right, word/char status bar.
+
+### Architecture
+
+UI code is class-based: one class per layer with a documented `Render()`
+method and a singleton instance (`extern Desktop g_desktop;` etc.).
+Conventions are spelled out in
+[`specs/coding_conventions.md`](specs/coding_conventions.md); phase-by-phase
+progress lives in [`specs/`](specs/).
 
 ## How to run
 
