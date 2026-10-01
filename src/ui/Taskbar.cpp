@@ -247,17 +247,30 @@ void Taskbar::Render()
     ImGui::SameLine();
     TaskbarIconButton("##taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);
 
-    // Tray clock pinned to the right edge, centered on the bar midline.
-    // Power now lives in the Start menu footer, so the tray keeps only time.
+    // Tray group (clock + power) pinned to the right edge, centered on the bar midline.
     const std::time_t now =
         std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     char clock[16] = {};
     std::strftime(clock, sizeof(clock), "%H:%M:%S", std::localtime(&now));
+    const AppIcon &tray_pwr = GetIcon("assets/images/off_btn.png");
+    const float pwr_px = kIconSize;
+    const float tray_spacing = 8.0f;
     const float mid_y = kTaskbarHeight * 0.5f;
     const float text_h = ImGui::GetTextLineHeight();
-    const float clock_x = ImGui::GetWindowWidth() - ImGui::CalcTextSize(clock).x - 12.0f;
+    const float pwr_x = ImGui::GetWindowWidth() - pwr_px - 4.0f - 8.0f;
+    const float clock_x = pwr_x - tray_spacing - ImGui::CalcTextSize(clock).x;
     ImGui::SetCursorPos(ImVec2(clock_x, mid_y - text_h * 0.5f));
     ImGui::TextUnformatted(clock);
+    ImGui::SetCursorPos(ImVec2(pwr_x, mid_y - (pwr_px + 4.0f) * 0.5f));
+    bool tray_power = false;
+    if (tray_pwr.ok())
+        tray_power = ImGui::ImageButton("##tray_power", tray_pwr.tex, ImVec2(pwr_px, pwr_px));
+    else
+        tray_power = ImGui::Button("PWR", ImVec2(52.0f, 0.0f));
+    if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal))
+        ImGui::SetTooltip("Turn Off Computer");
+    if (tray_power)
+        AppState::is_running = false;
 
     ImGui::End();
     ImGui::PopStyleVar(3);

@@ -3,10 +3,10 @@
 constexpr float kTaskbarHeight = 44.0f;
 
 /**
- * @brief Bottom shell layer: XP-style bar with Start button, app buttons, tray clock.
+ * @brief Bottom shell layer: XP-style bar with Start button, app buttons, tray clock + power.
  *
- * Owns the Start menu open state. The power button lives inside the
- * Start menu footer; the taskbar itself only shows the tray clock.
+ * Owns the Start menu open state. Power exists both as a tray button and
+ * inside the Start menu footer; both set AppState::is_running = false.
  */
 class Taskbar
 {
