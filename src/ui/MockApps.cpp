@@ -10,4 +10,6 @@ void MockApps::Render()
         calculator_.Render();
     if (AppState::show_app_2)
         paint_.Render();
+    if (AppState::show_file_explorer)
+        explorer_.Render();
 }

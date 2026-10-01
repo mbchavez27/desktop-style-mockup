@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui/CalculatorApp.h"
+#include "ui/FileExplorerApp.h"
 #include "ui/PaintApp.h"
 
 /**
@@ -24,6 +25,7 @@ public:
 private:
     CalculatorApp calculator_; ///< Four-function calculator (show_app_1).
     PaintApp paint_;           ///< Canvas drawing app (show_app_2).
+    FileExplorerApp explorer_; ///< Folder mock-up (show_file_explorer).
 };
 
 /// Global MockApps instance driven by the main render loop.
