@@ -66,6 +66,7 @@ void DesktopIcons::Render()
     DesktopIcon("##desk_app1", "assets/images/calculator.png", "Calculator", &AppState::show_app_1);
     DesktopIcon("##desk_app2", "assets/images/paint.png", "Paint", &AppState::show_app_2);
     DesktopIcon("##desk_explorer", "assets/images/file_explorer.png", "File Explorer", &AppState::show_file_explorer);
+    DesktopIcon("##desk_browser", "assets/images/browser.png", "Browser", &AppState::show_browser);
     DesktopIcon("##desk_taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);
 
     ImGui::End();

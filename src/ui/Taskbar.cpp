@@ -122,7 +122,7 @@ void Taskbar::StartMenuAppRow(const char *id, const char *icon_path, const char 
 void Taskbar::RenderStartMenu(bool start_hovered)
 {
     ImGuiViewport *vp = ImGui::GetMainViewport();
-    const int row_count = 4;
+    const int row_count = 5;
     const float menu_h = kMenuHeaderH + static_cast<float>(row_count) * kMenuRowH + 8.0f + kMenuFooterH;
     const ImVec2 menu_pos(vp->WorkPos.x + 2.0f, vp->WorkPos.y + vp->WorkSize.y - kTaskbarHeight - menu_h - 2.0f);
 
@@ -161,6 +161,7 @@ void Taskbar::RenderStartMenu(bool start_hovered)
     StartMenuAppRow("##sm_calc", "assets/images/calculator.png", "Calculator", &AppState::show_app_1);
     StartMenuAppRow("##sm_paint", "assets/images/paint.png", "Paint", &AppState::show_app_2);
     StartMenuAppRow("##sm_explorer", "assets/images/file_explorer.png", "File Explorer", &AppState::show_file_explorer);
+    StartMenuAppRow("##sm_browser", "assets/images/browser.png", "Browser", &AppState::show_browser);
     StartMenuAppRow("##sm_taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);
     ImGui::PopStyleVar();
     ImGui::EndGroup();
@@ -244,6 +245,8 @@ void Taskbar::Render()
     TaskbarIconButton("##app2", "assets/images/paint.png", "Paint", &AppState::show_app_2);
     ImGui::SameLine();
     TaskbarIconButton("##explorer", "assets/images/file_explorer.png", "File Explorer", &AppState::show_file_explorer);
+    ImGui::SameLine();
+    TaskbarIconButton("##browser", "assets/images/browser.png", "Browser", &AppState::show_browser);
     ImGui::SameLine();
     TaskbarIconButton("##taskmgr", "assets/images/taskmgr.png", "Task Manager", &AppState::show_task_mgr);
 

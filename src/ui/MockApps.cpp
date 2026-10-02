@@ -12,4 +12,6 @@ void MockApps::Render()
         paint_.Render();
     if (AppState::show_file_explorer)
         explorer_.Render();
+    if (AppState::show_browser)
+        browser_.Render();
 }

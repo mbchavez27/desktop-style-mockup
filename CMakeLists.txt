@@ -64,6 +64,7 @@ add_executable(mockup_app
   src/ui/PaintApp.cpp
   src/ui/CalculatorApp.cpp
   src/ui/FileExplorerApp.cpp
+  src/ui/BrowserApp.cpp
   src/ui/IconCache.cpp
 )
 
@@ -81,11 +82,12 @@ else()
 endif()
 
 # Icons live in source assets/ but the app runs from the build dir.
-add_custom_command(TARGET mockup_app POST_BUILD
+add_custom_target(copy_assets
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-          ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:mockup_app>/assets
+          ${CMAKE_SOURCE_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
   COMMENT "Copying assets next to mockup_app"
 )
+add_dependencies(mockup_app copy_assets)
 
 # Bundle the UCRT64 runtime DLLs next to the exe. Stale copies of these same
 # DLLs ship with C:\MinGW and iVerilog, which sit earlier in a typical PATH and
