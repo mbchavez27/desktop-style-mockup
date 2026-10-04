@@ -23,3 +23,12 @@ Implement a standard, floating OS-style window that displays mock running proces
   - Set headers: `ImGui::TableSetupColumn("Name");`, `ImGui::TableSetupColumn("CPU");`, `ImGui::TableSetupColumn("Memory");` and call `ImGui::TableHeadersRow()`.
 - **Dynamic Simulation (Optional but recommended):**
   To make it feel real, every few frames (or using `ImGui::GetTime()`), slightly perturb the `cpu` float values of the dummy processes by a small random amount so the numbers fluctuate like a real task manager. Format CPU as `%.1f%%` and Memory as `%d MB`.
+
+## 4. Status Footer (Phase 8b)
+
+- After `ImGui::EndTable()`, draw a separator and a summary line:
+  `Processes: <n>  |  Total CPU: <sum>`.
+- Sum the `cpu` values fresh each frame, format `%.1f%%`, clamp the
+  displayed value to [0, 100]. No cached/stored total.
+- Rendered only while the window is open (inside the existing
+  `show_task_mgr` / `Begin()` block).

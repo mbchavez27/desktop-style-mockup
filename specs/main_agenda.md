@@ -43,4 +43,5 @@ Execute the development in these phases. Read the specific `.md` files for exact
 - **Phase 5:** MS Paint canvas app (`specs/phases/phase-5-paint.md`).
 - **Phase 6:** MS Calculator app (`specs/phases/phase-6-calculator.md`).
 - **Phase 7:** OOP refactor — documented UI classes (`specs/phases/phase-7-oop-refactor.md`).
-- **Phase 8:** Implement `specs/feat/feat_taskmgr.md` (`specs/phases/phase-8-task-manager.md`).
+- **Phase 8a:** Implement `specs/feat/feat_taskmgr.md` (`specs/phases/phase-8a-task-manager.md`).
+- **Phase 8b:** Task Manager footer + docs pass (`specs/phases/phase-8b-task-manager-footer.md`).
