@@ -10,6 +10,8 @@ list of on/off switches (`AppState`) decides which apps show.
 
 ## User flow
 
+![User flow diagram](img/userflow.svg)
+
 ```mermaid
 flowchart LR
     Boot([START gets Boot screen<br/>click to skip]) --> Desk["Desktop<br/>wallpaper only"]
@@ -43,6 +45,8 @@ In plain steps:
 8. END — PWR quits. The outer window X is ignored on purpose.
 
 ## How it is made
+
+![How it is made diagram](img/howmade.svg)
 
 ```mermaid
 flowchart TB
