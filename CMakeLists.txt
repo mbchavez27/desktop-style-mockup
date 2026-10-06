@@ -66,6 +66,7 @@ add_executable(mockup_app
   src/ui/FileExplorerApp.cpp
   src/ui/BrowserApp.cpp
   src/ui/IconCache.cpp
+  src/ui/TaskManager.cpp
 )
 
 target_include_directories(mockup_app PRIVATE
