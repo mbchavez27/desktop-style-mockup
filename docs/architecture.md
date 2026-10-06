@@ -36,8 +36,9 @@ In plain steps:
    buttons, Start menu rows. All flip the same switch, so they agree.
 4. Saved switches (`AppState`) — one on/off switch per app: Calculator,
    Paint, File Explorer, Browser, Task Manager.
-5. App windows — four finished screens (Calculator, Paint, File Explorer,
-   Browser), above the brief's minimum of two. Each X closes only its own.
+5. App windows — four finished app screens (Calculator, Paint, File
+   Explorer, Browser), above the brief's minimum of two, plus the Task
+   Manager window from step 7. Each X closes only its own.
 6. Taskbar — full-width bottom bar. Start plus app buttons on the left,
    live clock plus PWR on the right. Start menu floats above with five rows.
 7. Task Manager — a Windows-style floating window with a Processes table:
@@ -76,15 +77,15 @@ What each box means:
 - Desktop first (`src/ui/Desktop.cpp`) — one picture stretched full screen
   (`assets/images/background.png`), gradient via `AddRectFilledMultiColor`
   if missing. Spec: `specs/feat/feat_desktop.md`.
-- Taskbar last on top (`src/ui/Taskbar.cpp`, `kTaskbarHeight = 44.0f`) —
-  slim full-width bar. `ImageButton` icons flip switches, open apps get an
-  underline, tray shows live `HH:MM:SS` (`strftime`) plus PWR.
-  Spec: `specs/feat/feat_taskbar.md`.
 - Task Manager window (`src/ui/TaskManager.cpp`, own global
   `g_task_manager` drawn in `main.cpp` between apps and taskbar) — floating
   400×300 `BeginTable` with Name, CPU, Memory columns over five dummy rows;
   CPU drifts each frame via an RNG scaled by frame time, clamped to
   [0, 100]. Spec: `specs/feat/feat_taskmgr.md`.
+- Taskbar last on top (`src/ui/Taskbar.cpp`, `kTaskbarHeight = 44.0f`) —
+  slim full-width bar. `ImageButton` icons flip switches, open apps get an
+  underline, tray shows live `HH:MM:SS` (`strftime`) plus PWR.
+  Spec: `specs/feat/feat_taskbar.md`.
 - Saved switches (`AppState`, C++17 statics) — shared true/false list the
   whole app reads each frame. Ref: `include/core/AppState.h`.
 - Pictures once (`IconCache` + `stb_image`) — `stbi_load` decodes each PNG
