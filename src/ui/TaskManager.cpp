@@ -57,6 +57,21 @@ void TaskManager::Render()
 
     ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_FirstUseEver);
     if (ImGui::Begin("Task Manager", &AppState::show_task_mgr))
+    {
         RenderTable();
+
+        float total_cpu = 0.0f;
+
+        for (const auto &process : processes) {
+            total_cpu += process.cpu;
+        }
+
+        total_cpu = std::clamp(total_cpu, 0.0f, 100.0f);
+
+        ImGui::Separator();
+        ImGui::Text("Processes: %zu | Total CPU: %.1f%%", processes.size(), total_cpu);
+    }
+
+
     ImGui::End();
 }
