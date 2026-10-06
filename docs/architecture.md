@@ -81,7 +81,8 @@ What each box means:
   `g_task_manager` drawn in `main.cpp` between apps and taskbar) — floating
   400×300 `BeginTable` with Name, CPU, Memory columns over five dummy rows;
   CPU drifts each frame via an RNG scaled by frame time, clamped to
-  [0, 100]. Spec: `specs/feat/feat_taskmgr.md`.
+  [0, 100], plus a `Processes / Total CPU` footer summed fresh each frame.
+  Spec: `specs/feat/feat_taskmgr.md`.
 - Taskbar last on top (`src/ui/Taskbar.cpp`, `kTaskbarHeight = 44.0f`) —
   slim full-width bar. `ImageButton` icons flip switches, open apps get an
   underline, tray shows live `HH:MM:SS` (`strftime`) plus PWR.
@@ -102,7 +103,5 @@ What each box means:
   sit in the taskbar tray. Fix: move or copy them into Desktop.
 - Taskbar brief wants three buttons minimum with two unique screens plus
   Task Manager. Done and beyond: five buttons, four unique screens.
-- Task Manager brief wants the processes table with dummy values. Done:
-  five rows, live CPU drift, native X close. Only remaining piece is the
-  phase-8b footer (`Processes: <n> | Total CPU: <sum>`) from
-  `specs/feat/feat_taskmgr.md` §4.
+- Task Manager brief wants the processes table with dummy values. Fully
+  done: five rows, live CPU drift, native X close, footer totals.
