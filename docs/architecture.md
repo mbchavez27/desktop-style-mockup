@@ -19,7 +19,7 @@ flowchart LR
     Launch --> State["Saved switches (AppState)<br/>one per app"]
     State --> Apps["App windows<br/>X closes one"]
     Apps --> Launch
-    Launch --> Mgr["Task Manager<br/>planned table<br/>CPU plus memory, dummy values"]
+    Launch --> Mgr["Task Manager<br/>live processes table<br/>CPU plus memory, dummy values"]
     Bar["Taskbar<br/>full bottom bar, buttons left<br/>clock plus PWR right"] --> Launch
     State --> Off([END gets PWR quits<br/>window X ignored])
     style Boot fill:#1B7A1B,color:#FFFFFF,stroke:#0D4713
@@ -40,8 +40,10 @@ In plain steps:
    Browser), above the brief's minimum of two. Each X closes only its own.
 6. Taskbar — full-width bottom bar. Start plus app buttons on the left,
    live clock plus PWR on the right. Start menu floats above with five rows.
-7. Task Manager — brief wants a table of fake processes with CPU and memory
-   numbers. Switch and buttons exist; the window itself is not built yet.
+7. Task Manager — a Windows-style floating window with a Processes table:
+   Name, CPU, and Memory columns over five dummy rows (`csopesy.exe`,
+   `dwm.exe`, and friends). CPU numbers drift a little every frame so it
+   feels alive. Its X button closes only it, like the other apps.
 8. END — PWR quits. The outer window X is ignored on purpose.
 
 ## How it is made
@@ -53,8 +55,8 @@ flowchart TB
     Init["Setup once (main.cpp)<br/>window plus UI ready"] --> Win["Window (GLFW 3.4 plus OpenGL3)<br/>1280x720, X ignored"]
     Init --> Loop["Loop each frame (ImGui)<br/>boot check, back to front"]
     Loop --> Desk2["Desktop first (Desktop.cpp)<br/>picture or gradient"]
-    Desk2 --> Bar2["Taskbar last on top (Taskbar.cpp)<br/>full bottom bar, 44px"]
-    Loop --> Mgr2["Task Manager next (TaskManager.cpp)<br/>switch ready, window missing"]
+    Desk2 --> Mgr2["Task Manager window (TaskManager.cpp)<br/>Name CPU Memory, live dummy rows"]
+    Mgr2 --> Bar2["Taskbar last on top (Taskbar.cpp)<br/>full bottom bar, 44px"]
     Loop --> State2["Saved switches (AppState)<br/>C++17 statics, read each frame"]
     Loop --> Pics["Pictures once (IconCache stb_image)<br/>reused each frame"]
     Build["Build (CMake FetchContent)<br/>GLFW, ImGui, stb_image"] --> Init
@@ -78,10 +80,11 @@ What each box means:
   slim full-width bar. `ImageButton` icons flip switches, open apps get an
   underline, tray shows live `HH:MM:SS` (`strftime`) plus PWR.
   Spec: `specs/feat/feat_taskbar.md`.
-- Task Manager next (`src/ui/TaskManager.cpp`) — planned floating table
-  (`BeginTable`) with Name, CPU, Memory columns, 4–5 fake rows, totals
-  footer. Spec: `specs/feat/feat_taskmgr.md`. Status: missing — the file
-  is empty and nothing draws it.
+- Task Manager window (`src/ui/TaskManager.cpp`, own global
+  `g_task_manager` drawn in `main.cpp` between apps and taskbar) — floating
+  400×300 `BeginTable` with Name, CPU, Memory columns over five dummy rows;
+  CPU drifts each frame via an RNG scaled by frame time, clamped to
+  [0, 100]. Spec: `specs/feat/feat_taskmgr.md`.
 - Saved switches (`AppState`, C++17 statics) — shared true/false list the
   whole app reads each frame. Ref: `include/core/AppState.h`.
 - Pictures once (`IconCache` + `stb_image`) — `stbi_load` decodes each PNG
@@ -98,5 +101,7 @@ What each box means:
   sit in the taskbar tray. Fix: move or copy them into Desktop.
 - Taskbar brief wants three buttons minimum with two unique screens plus
   Task Manager. Done and beyond: five buttons, four unique screens.
-- Task Manager brief wants the processes table with dummy values. Only
-  missing piece: build the window per `specs/feat/feat_taskmgr.md`.
+- Task Manager brief wants the processes table with dummy values. Done:
+  five rows, live CPU drift, native X close. Only remaining piece is the
+  phase-8b footer (`Processes: <n> | Total CPU: <sum>`) from
+  `specs/feat/feat_taskmgr.md` §4.
