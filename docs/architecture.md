@@ -10,7 +10,7 @@ list of on/off switches (`AppState`) decides which apps show.
 
 ## User flow
 
-![User flow diagram](img/userflow.svg)
+![User flow diagram](img/userflow.png)
 
 ```mermaid
 flowchart LR
@@ -46,14 +46,14 @@ In plain steps:
 
 ## How it is made
 
-![How it is made diagram](img/howmade.svg)
+![How it is made diagram](img/howmade.png)
 
 ```mermaid
 flowchart TB
     Init["Setup once (main.cpp)<br/>window plus UI ready"] --> Win["Window (GLFW 3.4 plus OpenGL3)<br/>1280x720, X ignored"]
     Init --> Loop["Loop each frame (ImGui)<br/>boot check, back to front"]
     Loop --> Desk2["Desktop first (Desktop.cpp)<br/>picture or gradient"]
-    Loop --> Bar2["Taskbar last on top (Taskbar.cpp)<br/>full bottom bar, 44px"]
+    Desk2 --> Bar2["Taskbar last on top (Taskbar.cpp)<br/>full bottom bar, 44px"]
     Loop --> Mgr2["Task Manager next (TaskManager.cpp)<br/>switch ready, window missing"]
     Loop --> State2["Saved switches (AppState)<br/>C++17 statics, read each frame"]
     Loop --> Pics["Pictures once (IconCache stb_image)<br/>reused each frame"]
