@@ -12,6 +12,7 @@
 #include "ui/DesktopIcons.h"
 #include "ui/Taskbar.h"
 #include "ui/MockApps.h"
+#include "ui/TaskManager.h"
 
 // Swallow OS close requests so shutdown only happens via is_running.
 static void OnWindowClose(GLFWwindow *window)
@@ -72,6 +73,7 @@ int main()
             g_desktop.Render();
             g_desktop_icons.Render();
             g_mock_apps.Render();
+            g_task_manager.Render();
             g_taskbar.Render();
         }
 
