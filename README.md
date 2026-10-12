@@ -1,6 +1,14 @@
 # desktop-style-mockup
 Desktop-Style OS Mock-up | For CSOPESY
 
+## Group 20
+
+- Chavez, Max Benedict B.
+- Leano, Jeremy L.
+- Go, Timothy Aaron S.
+- De La Calzada, Wanda
+
+
 ## Dependencies
 
 - CMake >= 3.16, git, and a C++17 compiler.
